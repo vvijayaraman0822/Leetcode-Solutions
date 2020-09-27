@@ -1,4 +1,5 @@
 // 98. Validate Binary Search Tree
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -16,17 +17,23 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return validate(root, null, null);
+        return isValid(root, null, null);
     }
         
-        public boolean validate(TreeNode root, Integer min, Integer max) {
-            if (root == null)
+        public boolean isValid(TreeNode root, Integer MIN, Integer MAX) {
+            if (root == null) {
                 return true;
-            if(min != null && root.val <= min || max != null && root.val >= max)
-                return false;
-            else 
-               return validate(root.left, min, root.val) && validate(root.right, root.val, max);            
+            }
             
-        }     
-        
+            // first condition is for right sub tree, the min element of the right should be greater than the root
+            // second condition is for left sub tree, maximum value of left sub tree should still be lesser than the root
+            if ((MIN != null && root.val <= MIN) || (MAX != null && root.val >= MAX)) { 
+                return false;
+            }
+          
+            // first condition for the left sub tree, MIN can be anything but max is root value - nothing can exceed root's value
+            // second condition for the right sub tree, MAX can be anything, but min is root value - min has to be higher than root's value 
+            return isValid(root.left, MIN, root.val) && isValid(root.right, root.val, MAX);
+        }
 }
+            
