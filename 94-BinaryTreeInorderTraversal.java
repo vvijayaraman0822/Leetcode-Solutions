@@ -1,5 +1,6 @@
+// 94. Binary Tree Inorder Traversal 
+
 /**
-// 94. Binary Tree Inorder Traversal
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
@@ -14,22 +15,50 @@
  *     }
  * }
  */
+
+// Recursive Solution 
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-         Stack<TreeNode> preOrderStack = new Stack<>();
-         List<Integer> finalList = new ArrayList<>();
+        List<Integer> outputList = new ArrayList<>();
+        return inOrder(root, outputList);  
+    }
+    
+        public List<Integer> inOrder(TreeNode root, List<Integer> outputList) {       
+            if (root == null) {
+                return outputList;
+            }
         
-        TreeNode current = root;
-        while(current != null || !preOrderStack.isEmpty()) {
-            while(current != null) {
-            preOrderStack.push(current);
-            current = current.left;
+            inOrder(root.left, outputList );
+            outputList.add(root.val);
+            inOrder(root.right, outputList);
+        
+            return outputList;
+        }
+}
+
+// Iterative solution
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> outputList = new ArrayList<>();
+        
+        if (root == null) {
+            return outputList;
         }
         
-        current = preOrderStack.pop();
-        finalList.add(current.val); 
-        current = current.right;    
-        }    
-    return finalList;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        
+        while (curr != null || !stack.isEmpty()) {
+           if (curr != null) {
+               stack.push(curr);
+               curr = curr.left;
+           } else {
+               TreeNode pop = stack.pop();
+               outputList.add(pop.val);
+               curr = pop.right;
+           }
+            
+        }
+         return outputList;
     }
 }
